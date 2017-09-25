@@ -6,25 +6,22 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var morgan = require('morgan');
 var passport = require('passport');
-var MongoStore = require('connect-mongo')(expressSession);
 var expressSession = require('express-session');
+var MongoStore = require('connect-mongo')(expressSession);
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('./backend/model/user');
+var User = require('./src/models/user');
+var userRoutes = require('./src/routes/userRoutes');
+app.use(cors());
+
 
 
 mongoose.Promise = require('bluebird');
-let MONGODB_URI =  process.env.MONGODB_URI || 'mongodb://localhost/invaders';
+var MONGODB_URI =  'mongodb://localhost/weather';
 
-mongoose.connect(MONGODB_URI)
-  .then(() => {
-    console.log('start');
-  })
-  .catch(err => {
-    console.error('App starting error', err.stack);
-    process.exit(1);
-  });
+mongoose.connect(MONGODB_URI);
+mongoose.Promise = Promise;
 
-  // passport config
+// passport config
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -36,18 +33,17 @@ app.use(expressSession({
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
-app.use(flash());
+//start up passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-var itemRouter = require('./src/routes/itemRoutes');
 
-app.use(express.static('public'));
-app.use(cors());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
+app.use(userRoutes);
 
-app.use('/items', itemRouter);
+app.use(express.static('public'));
 
 app.listen(port, function() {
   console.log('Server is running on port: ', port);

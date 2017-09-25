@@ -1,0 +1,31 @@
+{
+  "name": "weatherapp-backend",
+  "version": "1.0.0",
+  "description": "Weather app for Blue Wolf",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jisenber/weatherapp-backend.git"
+  },
+  "author": "Jacob Isenberg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jisenber/weatherapp-backend/issues"
+  },
+  "homepage": "https://github.com/jisenber/weatherapp-backend#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.15.4",
+    "mongoose": "^4.11.12",
+    "morgan": "^1.8.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.7.2"
+  }
+}

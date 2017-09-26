@@ -6,16 +6,14 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var morgan = require('morgan');
 var passport = require('passport');
-var expressSession = require('express-session');
-var MongoStore = require('connect-mongo')(expressSession);
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('./src/models/user');
 var userRoutes = require('./src/routes/userRoutes');
+var weatherRoutes = require('./src/routes/weatherRoutes');
+var expressSession = require('express-session');
+var MongoStore = require('connect-mongo')(expressSession);
 app.use(cors());
 
-
-
-mongoose.Promise = require('bluebird');
 var MONGODB_URI =  'mongodb://localhost/weather';
 
 mongoose.connect(MONGODB_URI);
@@ -42,6 +40,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 app.use(userRoutes);
+app.use(weatherRoutes);
 
 app.use(express.static('public'));
 

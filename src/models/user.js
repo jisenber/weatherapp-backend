@@ -8,7 +8,7 @@ let userSchema = mongoose.Schema({
   password: {type: String },
   history : [{
     locationSearched : {type: String},
-    dateSearched: {type: String},
+    dateSearched: {type: Date},
   }]
 });
 

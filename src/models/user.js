@@ -9,6 +9,7 @@ let userSchema = mongoose.Schema({
   history : [{
     locationSearched : {type: mongoose.Schema.Types.Mixed},
     dateSearched: {type: Date},
+    weatherDate: {type: Date}
   }]
 });
 

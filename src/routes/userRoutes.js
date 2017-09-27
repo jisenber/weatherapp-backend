@@ -38,4 +38,14 @@ router.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-//TODO: make a delete history route.
+router.post('/history', function(req, res) {
+  console.log(req.body);
+  var query = {username: req.body.username}
+  User.findOneAndUpdate(query, {$push:{history: req.body.history}}, {new: true}, (err, updatedUser) => {
+    if(err) {
+      console.log(err);
+      res.json({'success': false})
+    }
+    res.json(updatedUser.history);
+  })
+})

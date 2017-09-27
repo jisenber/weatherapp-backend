@@ -7,7 +7,7 @@ let userSchema = mongoose.Schema({
   username: {type: String, unique: true, required: true},
   password: {type: String },
   history : [{
-    locationSearched : {type: String},
+    locationSearched : {type: mongoose.Schema.Types.Mixed},
     dateSearched: {type: Date},
   }]
 });

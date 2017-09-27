@@ -4,10 +4,10 @@ var User = require('../models/user.js');
 
 var router = module.exports = new Router();
 
-router.post('/signup', function(req, res, next) {
+router.post('/signup', function(req, res) {
   console.log(req.body);
   User.register(new User({username : req.body.username}), req.body.password, function(err, user) {
-    console.log('LOGGING USER', user)
+    console.log('LOGGING USER', user);
     if (err) {
       res.send(err);
       return;
@@ -38,4 +38,25 @@ router.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-//TODO: make a delete history route.
+router.post('/history', function(req, res) {
+  console.log(req.body);
+  var query = {username: req.body.username};
+  User.findOneAndUpdate(query, {$push:{history: req.body.history}}, {new: true}, (err, updatedUser) => {
+    if(err) {
+      console.log(err);
+      res.json({'success': false});
+    }
+    res.json(updatedUser.history);
+  });
+});
+
+
+router.get('/history', function(req, res) {
+  User.findOne({username: req.query.user})
+    .then(user => {
+      res.send(user.history);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});

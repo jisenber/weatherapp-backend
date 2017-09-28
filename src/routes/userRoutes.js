@@ -54,7 +54,7 @@ router.post('/history', function(req, res) {
 router.get('/history', function(req, res) {
   User.findOne({username: req.query.user})
     .then(user => {
-      res.send(user.history);
+      res.json(user.history);
     })
     .catch(err => {
       console.log(err);

@@ -10,8 +10,6 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('./src/models/user');
 var userRoutes = require('./src/routes/userRoutes');
 var weatherRoutes = require('./src/routes/weatherRoutes');
-var expressSession = require('express-session');
-var MongoStore = require('connect-mongo')(expressSession);
 app.use(cors());
 
 var MONGODB_URI =  'mongodb://localhost/weather';
@@ -23,13 +21,6 @@ mongoose.Promise = Promise;
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-app.use(expressSession({
-  secret: process.env.EXPRESS_SES_SECRET || 'keyboard cat',
-  resave: false,
-  saveUninitialized: false,
-  store: new MongoStore({ mongooseConnection: mongoose.connection })
-}));
 
 //start up passport
 app.use(passport.initialize());

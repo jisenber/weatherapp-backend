@@ -1,5 +1,4 @@
 var Router = require('express').Router;
-var User = require('../models/user.js');
 var request = require('superagent');
 var googleMapsClient = require('@google/maps').createClient({
   key: process.env.GOOGLE_MAPS_API_KEY
@@ -24,7 +23,11 @@ router.post('/geolocate', function(req, res) {
     if (err) {
       console.log(err);
       res.json({success: false});
-    } else {
+    } if (response.json.status === 'ZERO_RESULTS') {
+      res.status(404).end();
+    }
+    else {
+      console.log(response);
       res.json(response.json.results);
     }
   });
@@ -38,4 +41,4 @@ router.get('/timeforecast', function(req, res) {
       }
       res.json(response.body);
     });
-})
+});

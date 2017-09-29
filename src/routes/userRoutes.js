@@ -4,6 +4,7 @@ var User = require('../models/user.js');
 
 var router = module.exports = new Router();
 
+//signup route which uses passportLocalMongoose's register method which automatically hashes password and saves info to DB
 router.post('/signup', function(req, res) {
   console.log(req.body);
   User.register(new User({username : req.body.username}), req.body.password, function(err, user) {
@@ -23,21 +24,7 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
   res.send(req.user.history);
 });
 
-router.get('/', function(req, res) {
-  if(req.isAuthenticated()) {
-    console.log('user is authenticated!');
-    res.send(req.user.history);
-  } else {
-    res.send('no user logged in');
-  }
-});
-
-router.get('/logout', function(req, res){
-  req.logout();
-  req.session.destroy();
-  res.redirect('/');
-});
-
+//saves a search made by a user
 router.post('/history', function(req, res) {
   console.log(req.body);
   var query = {username: req.body.username};
@@ -50,7 +37,7 @@ router.post('/history', function(req, res) {
   });
 });
 
-
+//sends a user's history to the front end
 router.get('/history', function(req, res) {
   User.findOne({username: req.query.user})
     .then(user => {

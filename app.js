@@ -12,7 +12,7 @@ var userRoutes = require('./src/routes/userRoutes');
 var weatherRoutes = require('./src/routes/weatherRoutes');
 app.use(cors());
 
-var MONGODB_URI =  'mongodb://localhost/weather';
+var MONGODB_URI =  process.env.MONGODB_URI || 'mongodb://localhost/weather';
 
 mongoose.connect(MONGODB_URI);
 mongoose.Promise = Promise;

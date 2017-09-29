@@ -6,6 +6,7 @@ var googleMapsClient = require('@google/maps').createClient({
 
 var router = module.exports = new Router();
 
+//darksky call for a current forecast - no calendar
 router.get('/weather', function(req, res) {
   request.get(`https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${req.query.lat},${req.query.lng}`)
     .end((err, response) => {
@@ -16,8 +17,7 @@ router.get('/weather', function(req, res) {
     });
 });
 
-
-
+//takes in data send from the front end (a string) and uses that as the input for the Google Maps API geolocate method
 router.post('/geolocate', function(req, res) {
   googleMapsClient.geocode({address: req.body.location} , function(err, response) {
     if (err) {
@@ -33,6 +33,7 @@ router.post('/geolocate', function(req, res) {
   });
 });
 
+//darksky API call for a calendar forecast
 router.get('/timeforecast', function(req, res) {
   request.get(`https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${req.query.lat},${req.query.lng},${req.query.time}`)
     .end((err, response) => {
